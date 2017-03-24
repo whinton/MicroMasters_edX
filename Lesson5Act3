@@ -1,0 +1,205 @@
+//Got this activity to work.  Had to use onClickListner
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.Random;
+
+public class MainActivity extends AppCompatActivity {
+    //Set the counts
+    int userCount = 0;
+    int tiesCount = 0;
+    int phoneCount = 0;
+
+    //Set a phone random number
+    Random rand = new Random();
+
+    //Set buttons
+    Button rockBtn, paperBtn, scissorsBtn, tryBtn;
+
+    String myChoice, phoneChoice;
+    String wResult = "You win.", lResult = "You lose.", tResult = "You tie.";
+
+    //Set my choice
+    //TextView my = (TextView) findViewById(R.id.userChoice);
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //Intialize Buttons
+        rockBtn =  (Button) findViewById(R.id.rockBtn);
+        paperBtn = (Button) findViewById(R.id.paperBtn);
+        scissorsBtn = (Button) findViewById(R.id.scissorsBtn);
+        tryBtn = (Button) findViewById(R.id.tryBtn);
+
+
+
+        //Set my choice
+        final TextView my = (TextView) findViewById(R.id.userChoice);
+
+        //Set On click listeners and my selection
+        rockBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myChoice = "Rock";
+                my.setText(myChoice);
+                selectionMethod();
+                turnOff();
+            }
+        });
+
+        paperBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myChoice = "Paper";
+                my.setText(myChoice);
+                selectionMethod();
+                turnOff();
+
+            }
+        });
+
+        scissorsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myChoice = "Scissors";
+                my.setText(myChoice);
+                selectionMethod();
+                turnOff();
+
+            }
+        });
+
+        tryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                turnOn();
+            }
+        });
+
+    }
+
+    protected void turnOff (){
+
+        tryBtn.setVisibility(View.VISIBLE);
+        rockBtn.setVisibility(View.INVISIBLE);
+        paperBtn.setVisibility(View.INVISIBLE);
+        scissorsBtn.setVisibility(View.INVISIBLE);
+    }
+
+    protected void turnOn(){
+        tryBtn.setVisibility(View.INVISIBLE);
+        rockBtn.setVisibility(View.VISIBLE);
+        paperBtn.setVisibility(View.VISIBLE);
+        scissorsBtn.setVisibility(View.VISIBLE);
+    }
+
+    public void selectionMethod (){
+        //Make random number
+        int phoneSelect = rand.nextInt(3);
+
+        //Set Text views
+        TextView phone = (TextView) findViewById(R.id.phoneChoice);
+        TextView uResult = (TextView) findViewById(R.id.userResult);
+        TextView pResult = (TextView) findViewById(R.id.phoneResult);
+        /*TextView tCount = (TextView) findViewById(R.id.tiesCount);
+        TextView uCount = (TextView) findViewById(R.id.userCount);
+        TextView pCount = (TextView) findViewById(R.id.phoneCount);
+*/
+        //Generate phones selection
+        switch (phoneSelect){
+            case 0: phoneChoice = "Rock";
+                phone.setText(phoneChoice);
+                break;
+            case 1: phoneChoice = "Paper";
+                phone.setText(phoneChoice);
+                break;
+            case 2: phoneChoice= "Scissors";
+                phone.setText(phoneChoice);
+                break;
+            default: break;
+        }
+
+        //Determine who won and add to counts
+         if (myChoice.equals("Rock") && phoneChoice.equals("Rock")){
+             uResult.setText(tResult);
+             pResult.setText(tResult);
+             tiesCount ++;
+             displayTies(tiesCount);
+
+         }
+         if (myChoice.equals("Rock") && phoneChoice.equals("Paper")){
+             uResult.setText(lResult);
+             pResult.setText(wResult);
+             phoneCount ++;
+             displayPhone(phoneCount);
+        }
+        if (myChoice.equals("Rock") && phoneChoice.equals("Scissors")){
+            uResult.setText(wResult);
+            pResult.setText(lResult);
+            userCount ++;
+            displayUser(userCount);
+         }
+        if (myChoice.equals("Paper") && phoneChoice.equals("Rock")){
+            uResult.setText(wResult);
+            pResult.setText(lResult);
+            userCount ++;
+            displayUser(userCount);
+        }
+        if (myChoice.equals("Paper") && phoneChoice.equals("Paper")){
+            uResult.setText(tResult);
+            pResult.setText(tResult);
+            tiesCount ++;
+            displayTies(tiesCount);
+        }
+
+        if (myChoice.equals("Paper") && phoneChoice.equals("Scissors")){
+            uResult.setText(lResult);
+            pResult.setText(wResult);
+            phoneCount ++;
+            displayPhone(phoneCount);
+        }
+        if (myChoice.equals("Scissors") && phoneChoice.equals("Rock")){
+            uResult.setText(lResult);
+            pResult.setText(wResult);
+            phoneCount ++;
+            displayPhone(phoneCount);
+        }
+        if (myChoice.equals("Scissors") && phoneChoice.equals("Paper")){
+            uResult.setText(wResult);
+            pResult.setText(lResult);
+            userCount ++;
+            displayUser(userCount);
+        }
+        if (myChoice.equals("Scissors") && phoneChoice.equals("Scissors")){
+            uResult.setText(tResult);
+            pResult.setText(tResult);
+            tiesCount ++;
+            displayTies(tiesCount);
+        }
+
+    }
+
+    public void displayTies(int num){
+        TextView quantTextView = (TextView) findViewById(R.id.tiesCount);
+        quantTextView.setText("" + num);
+    }
+
+    public void displayUser(int num){
+        TextView quantTextView = (TextView) findViewById(R.id.userCount);
+        quantTextView.setText("" + num);
+    }
+
+    public void displayPhone(int num){
+        TextView quantTextView = (TextView) findViewById(R.id.phoneCount);
+        quantTextView.setText("" + num);
+    }
+
+
+}
